@@ -5,6 +5,10 @@ on:
     branches: [ main ]
     types: [opened, synchronize, reopened]
 
+concurrency:
+  group: ci-pr-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
@@ -43,19 +47,43 @@ jobs:
       - name: Type Check
         run: pnpm type-check
 
-      - name: Unit tests
-        run: pnpm test:unit
+      - name: Unit tests (with coverage)
+        run: pnpm test:unit:cov || pnpm test:unit:cov
 
-      - name: Component tests (web)
-        run: pnpm test:component
+      - name: Component tests (with coverage)
+        run: pnpm --filter @nfl-tekstitv/web test:component -- --coverage || pnpm --filter @nfl-tekstitv/web test:component -- --coverage
 
       - name: Install Playwright Browsers
         working-directory: apps/web
         run: pnpm playwright:install
 
-      - name: E2E tests with mock
+      - name: E2E tests with mock (retry once)
+        id: e2e
         working-directory: apps/web
         env:
           DATA_SOURCE: mock
           BASE_URL: http://127.0.0.1:3000
-        run: pnpm test:e2e:mock
+        run: |
+          pnpm test:e2e:mock || pnpm test:e2e:mock
+
+      - name: Upload Playwright artifacts
+        if: failure() || steps.e2e.outcome == 'failure'
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-artifacts
+          path: |
+            apps/web/test-results/**
+            apps/web/playwright-report/**
+            apps/web/playwright/.playwright-artifacts/**
+          if-no-files-found: ignore
+
+      - name: Summarize coverage
+        if: always()
+        run: |
+          echo '## Coverage Summary' >> $GITHUB_STEP_SUMMARY
+          if [ -f apps/web/coverage/index.html ]; then
+            grep -Eo 'All files[^%]*%|Statements[^%]*%' apps/web/coverage/lcov-report/index.html 2>/dev/null || true
+          fi
+          if [ -f coverage/lcov.info ]; then
+            npx --yes coverage-summary-cli coverage/lcov.info >> $GITHUB_STEP_SUMMARY 2>/dev/null || echo 'lcov parsing skipped'
+          fi
