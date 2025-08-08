@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import TeletextGrid from '../components/TeletextGrid';
-import type { Game } from '@core/types';
+import type { Game } from '@nfl-tekstitv/core/types';
 
 const sample: Game[] = [
   {

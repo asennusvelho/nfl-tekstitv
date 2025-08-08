@@ -1,4 +1,4 @@
-import type { ScoreProvider } from '@core/ports/scoreProvider';
+import type { ScoreProvider } from '@nfl-tekstitv/core/ports/scoreProvider';
 import { mockScoreProvider } from '@nfl-tekstitv/core/adapters/mock';
 
 export function getScoreProvider(): ScoreProvider {
