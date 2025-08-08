@@ -64,7 +64,7 @@ jobs:
           DATA_SOURCE: mock
           BASE_URL: http://127.0.0.1:3000
         run: |
-          pnpm test:e2e:mock || pnpm test:e2e:mock
+          pnpm test:e2e:mock || { echo 'First attempt failed, retrying...' && pnpm test:e2e:mock; }
 
       - name: Upload Playwright artifacts
         if: failure() || steps.e2e.outcome == 'failure'
