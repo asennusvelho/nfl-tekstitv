@@ -1,4 +1,4 @@
-import type { Game } from '@core/types';
+import type { Game } from '@nfl-tekstitv/core/types';
 
 export default function TeletextGrid({ games }: { games: Game[] }) {
   return (
