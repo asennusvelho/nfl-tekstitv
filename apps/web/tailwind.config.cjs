@@ -15,6 +15,12 @@ module.exports = {
           'monospace',
         ],
       },
+      colors: {
+        // Added custom magenta so the class name `text-magenta-400` used in TeletextGrid works.
+        magenta: {
+          400: '#ff00ff', // classic teletext-style vivid magenta
+        },
+      },
     },
   },
   plugins: [],
