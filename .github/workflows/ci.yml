@@ -51,7 +51,7 @@ jobs:
         run: pnpm test:unit:cov || { echo 'First attempt failed, retrying...' && pnpm test:unit:cov; }
 
       - name: Component tests (with coverage)
-        run: pnpm --filter @nfl-tekstitv/web test:component -- --coverage || pnpm --filter @nfl-tekstitv/web test:component -- --coverage
+        run: pnpm --filter @nfl-tekstitv/web test:component -- --coverage || { echo 'First attempt failed, retrying...' && pnpm --filter @nfl-tekstitv/web test:component -- --coverage; }
 
       - name: Install Playwright Browsers
         working-directory: apps/web
