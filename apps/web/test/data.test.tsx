@@ -15,8 +15,8 @@ describe('getScoreProvider', () => {
     process.env.DATA_SOURCE = 'mock';
     const provider = getScoreProvider();
     expect(provider).toBeDefined();
-  // runtime shape check
-  expect(typeof provider.getGames).toBe('function');
+    // runtime shape check
+    expect(typeof provider.getGames).toBe('function');
   });
 
   it('throws when DATA_SOURCE not set', () => {
