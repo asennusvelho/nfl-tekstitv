@@ -48,7 +48,7 @@ jobs:
         run: pnpm type-check
 
       - name: Unit tests (with coverage)
-        run: pnpm test:unit:cov || pnpm test:unit:cov
+        run: pnpm test:unit:cov || { echo 'First attempt failed, retrying...' && pnpm test:unit:cov; }
 
       - name: Component tests (with coverage)
         run: pnpm --filter @nfl-tekstitv/web test:component -- --coverage || pnpm --filter @nfl-tekstitv/web test:component -- --coverage
