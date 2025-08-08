@@ -17,7 +17,7 @@
     "playwright:install": "playwright install --with-deps"
   },
   "dependencies": {
-    "next": "14.2.5",
+    "next": "14.2.30",
     "react": "18.3.1",
     "react-dom": "18.3.1",
     "@nfl-tekstitv/core": "workspace:*",
