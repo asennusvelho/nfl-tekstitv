@@ -1,0 +1,22 @@
+[
+  {
+    "id": "2025-01-NE-NYJ",
+    "season": 2025,
+    "week": 1,
+    "homeTeam": "NE",
+    "awayTeam": "NYJ",
+    "homeScore": 10,
+    "awayScore": 7,
+    "status": "FINAL"
+  },
+  {
+    "id": "2025-01-GB-CHI",
+    "season": 2025,
+    "week": 1,
+    "homeTeam": "CHI",
+    "awayTeam": "GB",
+    "homeScore": 17,
+    "awayScore": 20,
+    "status": "FINAL"
+  }
+]

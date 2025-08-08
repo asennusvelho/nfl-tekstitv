@@ -1,0 +1,20 @@
+{
+  "name": "nfl-tekstitv",
+  "private": true,
+  "version": "0.1.0",
+  "scripts": {
+    "dev": "pnpm --filter @nfl-tekstitv/web dev",
+    "dev:mock": "DATA_SOURCE=mock pnpm --filter @nfl-tekstitv/web dev",
+    "lint": "pnpm --filter @nfl-tekstitv/web run lint",
+    "type-check": "pnpm -r run type-check",
+    "test:unit": "pnpm -r run test:unit",
+    "test:component": "pnpm --filter @nfl-tekstitv/web run test:component",
+    "test:unit:cov": "pnpm --filter @nfl-tekstitv/web run test:unit:cov",
+    "test:e2e": "pnpm --filter @nfl-tekstitv/web run test:e2e",
+    "test:e2e:mock": "pnpm --filter @nfl-tekstitv/web run test:e2e:mock",
+    "build": "pnpm --filter @nfl-tekstitv/web build",
+    "start": "pnpm --filter @nfl-tekstitv/web start",
+    "playwright:install": "pnpm --filter @nfl-tekstitv/web run playwright:install"
+  },
+  "packageManager": "pnpm@10.14.0+sha512.ad27a79641b49c3e481a16a805baa71817a04bbe06a38d17e60e2eaee83f6a146c6a688125f5792e48dd5ba30e7da52a5cda4c3992b9ccf333f9ce223af84748"
+}

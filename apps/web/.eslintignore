@@ -1,0 +1,12 @@
+node_modules
+.next
+out
+coverage
+.playwright
+playwright-report
+postcss.config.cjs
+tailwind.config.cjs
+next.config.mjs
+tailwind.config.ts
+vitest.config.ts
+playwright.config.ts

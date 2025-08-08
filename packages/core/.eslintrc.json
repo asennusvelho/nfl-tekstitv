@@ -1,0 +1,8 @@
+{
+  "root": true,
+  "env": { "es2022": true, "node": true },
+  "parserOptions": { "sourceType": "module" },
+  "extends": ["plugin:prettier/recommended"],
+  "ignorePatterns": ["node_modules", "dist", "coverage", "vitest.config.ts"],
+  "rules": {}
+}

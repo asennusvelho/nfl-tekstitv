@@ -1,0 +1,16 @@
+{
+  "root": true,
+  "extends": ["next/core-web-vitals", "plugin:prettier/recommended"],
+  "ignorePatterns": [
+    "node_modules",
+    ".next",
+    "out",
+    "coverage",
+    ".playwright",
+    "playwright-report",
+    "postcss.config.cjs",
+    "tailwind.config.cjs",
+    "next.config.mjs"
+  ],
+  "rules": {}
+}
