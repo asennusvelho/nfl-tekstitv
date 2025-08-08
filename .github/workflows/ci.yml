@@ -1,10 +1,9 @@
 name: CI
 
 on:
-  push:
-    branches: [ main, master, '**' ]
   pull_request:
-    branches: [ '**' ]
+    branches: [ main ]
+    types: [opened, synchronize, reopened]
 
 jobs:
   build-and-test:
@@ -53,10 +52,6 @@ jobs:
       - name: Install Playwright Browsers
         working-directory: apps/web
         run: pnpm playwright:install
-
-      - name: Build web app
-        working-directory: apps/web
-        run: pnpm build
 
       - name: E2E tests with mock
         working-directory: apps/web

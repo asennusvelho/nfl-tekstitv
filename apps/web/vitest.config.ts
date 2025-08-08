@@ -32,7 +32,11 @@ export default defineConfig({
       ],
     },
     deps: {
-      inline: ['@nfl-tekstitv/core'],
+      optimizer: {
+        web: {
+          include: ['@nfl-tekstitv/core'],
+        },
+      },
     },
   },
   resolve: {
