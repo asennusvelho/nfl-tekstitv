@@ -1,12 +1,11 @@
 import { defineConfig } from 'vitest/config';
 import react from '@vitejs/plugin-react-swc';
-import path from 'node:path';
-import { fileURLToPath } from 'node:url';
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+import tsconfigPaths from 'vite-tsconfig-paths';
 
 export default defineConfig({
-  plugins: [react()],
+  // tsconfigPaths plugin reads the (extended) tsconfig path mappings so we avoid duplicating
+  // the @core/* alias here (source of truth: tsconfig.base.json)
+  plugins: [tsconfigPaths({ projects: ['../../tsconfig.base.json'] }), react()],
   test: {
     environment: 'jsdom',
     setupFiles: ['./vitest.setup.ts'],
@@ -39,10 +38,5 @@ export default defineConfig({
       },
     },
   },
-  resolve: {
-    alias: {
-      '@core': path.resolve(__dirname, '../../packages/core/src'),
-      '@core/*': path.resolve(__dirname, '../../packages/core/src/*'),
-    },
-  },
+  // Manual resolve.alias removed to prevent duplication with tsconfig paths.
 });
