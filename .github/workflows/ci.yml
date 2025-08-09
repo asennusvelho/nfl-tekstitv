@@ -75,7 +75,7 @@ jobs:
         if: always()
         run: |
           echo '## Coverage Summary' >> $GITHUB_STEP_SUMMARY
-          if [ -f apps/web/coverage/index.html ]; then
+          if [ -f apps/web/coverage/lcov-report/index.html ]; then
             grep -Eo 'All files[^%]*%|Statements[^%]*%' apps/web/coverage/lcov-report/index.html >> $GITHUB_STEP_SUMMARY 2>/dev/null || true
           fi
           if [ -f apps/web/coverage/lcov.info ]; then
