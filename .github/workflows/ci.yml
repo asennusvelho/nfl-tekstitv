@@ -76,8 +76,8 @@ jobs:
         run: |
           echo '## Coverage Summary' >> $GITHUB_STEP_SUMMARY
           if [ -f apps/web/coverage/index.html ]; then
-            grep -Eo 'All files[^%]*%|Statements[^%]*%' apps/web/coverage/lcov-report/index.html 2>/dev/null || true
+            grep -Eo 'All files[^%]*%|Statements[^%]*%' apps/web/coverage/lcov-report/index.html >> $GITHUB_STEP_SUMMARY 2>/dev/null || true
           fi
-          if [ -f coverage/lcov.info ]; then
-            npx --yes coverage-summary-cli coverage/lcov.info >> $GITHUB_STEP_SUMMARY 2>/dev/null || echo 'lcov parsing skipped'
+          if [ -f apps/web/coverage/lcov.info ]; then
+            npx --yes coverage-summary-cli apps/web/coverage/lcov.info >> $GITHUB_STEP_SUMMARY 2>/dev/null || echo 'lcov parsing skipped'
           fi
