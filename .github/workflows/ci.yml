@@ -36,9 +36,8 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Install Playwright (browsers + deps)
-        uses: microsoft/playwright-github-action@v1
-        with:
-          working-directory: apps/web
+        working-directory: apps/web
+        run: pnpm exec playwright install --with-deps chromium
 
       - name: Lint
         run: pnpm lint
