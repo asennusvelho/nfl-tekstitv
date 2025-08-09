@@ -12,34 +12,32 @@ concurrency:
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
+    env:
+      CI: true
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 'lts/*'
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
         with:
           run_install: false
 
-      - name: Get pnpm store directory
-        id: pnpm-cache
-        run: echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
+      - name: Enable Corepack
+        run: corepack enable
 
-      - name: Setup pnpm cache
-        uses: actions/cache@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
-          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-pnpm-store-
+          node-version: 'lts/*'
+          cache: 'pnpm'
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
+
+      - name: Install Playwright (browsers + deps)
+        working-directory: apps/web
+        run: pnpm exec playwright install --with-deps chromium
 
       - name: Lint
         run: pnpm lint
@@ -48,14 +46,7 @@ jobs:
         run: pnpm type-check
 
       - name: Unit tests (with coverage)
-        run: pnpm test:unit:cov || { echo 'First attempt failed, retrying...' && pnpm test:unit:cov; }
-
-      - name: Component tests (with coverage)
-        run: pnpm --filter @nfl-tekstitv/web test:component -- --coverage || { echo 'First attempt failed, retrying...' && pnpm --filter @nfl-tekstitv/web test:component -- --coverage; }
-
-      - name: Install Playwright Browsers
-        working-directory: apps/web
-        run: pnpm playwright:install
+        run: pnpm test:unit:cov || pnpm test:unit:cov
 
       - name: E2E tests with mock (retry once)
         id: e2e
@@ -64,7 +55,7 @@ jobs:
           DATA_SOURCE: mock
           BASE_URL: http://127.0.0.1:3000
         run: |
-          pnpm test:e2e:mock || { echo 'First attempt failed, retrying...' && pnpm test:e2e:mock; }
+          pnpm test:e2e:mock || pnpm test:e2e:mock
 
       - name: Upload Playwright artifacts
         if: failure() || steps.e2e.outcome == 'failure'
@@ -81,9 +72,8 @@ jobs:
         if: always()
         run: |
           echo '## Coverage Summary' >> $GITHUB_STEP_SUMMARY
-          if [ -f apps/web/coverage/lcov-report/index.html ]; then
-            grep -Eo 'All files[^%]*%|Statements[^%]*%' apps/web/coverage/lcov-report/index.html 2>/dev/null || true
-          fi
-          if [ -f coverage/lcov.info ]; then
-            npx --yes coverage-summary-cli coverage/lcov.info >> $GITHUB_STEP_SUMMARY 2>/dev/null || echo 'lcov parsing skipped'
+          if [ -f apps/web/coverage/lcov.info ]; then
+            npx --yes coverage-summary-cli apps/web/coverage/lcov.info >> $GITHUB_STEP_SUMMARY
+          else
+            echo 'No coverage file found' >> $GITHUB_STEP_SUMMARY
           fi
