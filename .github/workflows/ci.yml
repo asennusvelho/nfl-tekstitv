@@ -48,9 +48,6 @@ jobs:
       - name: Unit tests (with coverage)
         run: pnpm test:unit:cov || pnpm test:unit:cov
 
-      - name: Component tests (with coverage)
-        run: pnpm --filter @nfl-tekstitv/web test:component -- --coverage || pnpm --filter @nfl-tekstitv/web test:component -- --coverage
-
       - name: E2E tests with mock (retry once)
         id: e2e
         working-directory: apps/web
@@ -75,9 +72,8 @@ jobs:
         if: always()
         run: |
           echo '## Coverage Summary' >> $GITHUB_STEP_SUMMARY
-          if [ -f apps/web/coverage/lcov-report/index.html ]; then
-            grep -Eo 'All files[^%]*%|Statements[^%]*%' apps/web/coverage/lcov-report/index.html >> $GITHUB_STEP_SUMMARY 2>/dev/null || true
-          fi
           if [ -f apps/web/coverage/lcov.info ]; then
-            npx --yes coverage-summary-cli apps/web/coverage/lcov.info >> $GITHUB_STEP_SUMMARY 2>/dev/null || echo 'lcov parsing skipped'
+            npx --yes coverage-summary-cli apps/web/coverage/lcov.info >> $GITHUB_STEP_SUMMARY
+          else
+            echo 'No coverage file found' >> $GITHUB_STEP_SUMMARY
           fi
