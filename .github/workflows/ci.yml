@@ -12,6 +12,8 @@ concurrency:
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
+    env:
+      CI: true
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -20,89 +22,60 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 'lts/*'
+          cache: 'pnpm'
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
         with:
           run_install: false
 
-      - name: Get pnpm store directory
-        id: pnpm-cache
-        run: echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
 
-      - name: Setup pnpm cache
-        uses: actions/cache@v4
+      - name: Install Playwright (browsers + deps)
+        uses: microsoft/playwright-github-action@v1
         with:
-          path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
-          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            jobs:
-              build-and-test:
-                runs-on: ubuntu-latest
-                env:
-                  CI: true
-                steps:
-                  - name: Checkout
-                    uses: actions/checkout@v4
+          working-directory: apps/web
 
-                  - name: Setup Node.js
-                    uses: actions/setup-node@v4
-                    with:
-                      node-version: 'lts/*'
-                      cache: 'pnpm'
+      - name: Lint
+        run: pnpm lint
 
-                  - name: Setup pnpm
-                    uses: pnpm/action-setup@v4
-                    with:
-                      run_install: false
+      - name: Type Check
+        run: pnpm type-check
 
-                  - name: Install dependencies
-                    run: pnpm install --frozen-lockfile
+      - name: Unit tests (with coverage)
+        run: pnpm test:unit:cov || pnpm test:unit:cov
 
-                  - name: Install Playwright (browsers + deps)
-                    uses: microsoft/playwright-github-action@v1
-                    with:
-                      working-directory: apps/web
+      - name: Component tests (with coverage)
+        run: pnpm --filter @nfl-tekstitv/web test:component -- --coverage || pnpm --filter @nfl-tekstitv/web test:component -- --coverage
 
-                  - name: Lint
-                    run: pnpm lint
+      - name: E2E tests with mock (retry once)
+        id: e2e
+        working-directory: apps/web
+        env:
+          DATA_SOURCE: mock
+          BASE_URL: http://127.0.0.1:3000
+        run: |
+          pnpm test:e2e:mock || pnpm test:e2e:mock
 
-                  - name: Type Check
-                    run: pnpm type-check
+      - name: Upload Playwright artifacts
+        if: failure() || steps.e2e.outcome == 'failure'
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-artifacts
+          path: |
+            apps/web/test-results/**
+            apps/web/playwright-report/**
+            apps/web/playwright/.playwright-artifacts/**
+          if-no-files-found: ignore
 
-                  - name: Unit tests (with coverage)
-                    run: pnpm test:unit:cov || pnpm test:unit:cov
-
-                  - name: Component tests (with coverage)
-                    run: pnpm --filter @nfl-tekstitv/web test:component -- --coverage || pnpm --filter @nfl-tekstitv/web test:component -- --coverage
-
-                  - name: E2E tests with mock (retry once)
-                    id: e2e
-                    working-directory: apps/web
-                    env:
-                      DATA_SOURCE: mock
-                      BASE_URL: http://127.0.0.1:3000
-                    run: |
-                      pnpm test:e2e:mock || pnpm test:e2e:mock
-
-                  - name: Upload Playwright artifacts
-                    if: failure() || steps.e2e.outcome == 'failure'
-                    uses: actions/upload-artifact@v4
-                    with:
-                      name: playwright-artifacts
-                      path: |
-                        apps/web/test-results/**
-                        apps/web/playwright-report/**
-                        apps/web/playwright/.playwright-artifacts/**
-                      if-no-files-found: ignore
-
-                  - name: Summarize coverage
-                    if: always()
-                    run: |
-                      echo '## Coverage Summary' >> $GITHUB_STEP_SUMMARY
-                      if [ -f apps/web/coverage/index.html ]; then
-                        grep -Eo 'All files[^%]*%|Statements[^%]*%' apps/web/coverage/lcov-report/index.html 2>/dev/null || true
-                      fi
-                      if [ -f coverage/lcov.info ]; then
-                        npx --yes coverage-summary-cli coverage/lcov.info >> $GITHUB_STEP_SUMMARY 2>/dev/null || echo 'lcov parsing skipped'
-                      fi
+      - name: Summarize coverage
+        if: always()
+        run: |
+          echo '## Coverage Summary' >> $GITHUB_STEP_SUMMARY
+          if [ -f apps/web/coverage/index.html ]; then
+            grep -Eo 'All files[^%]*%|Statements[^%]*%' apps/web/coverage/lcov-report/index.html 2>/dev/null || true
+          fi
+          if [ -f coverage/lcov.info ]; then
+            npx --yes coverage-summary-cli coverage/lcov.info >> $GITHUB_STEP_SUMMARY 2>/dev/null || echo 'lcov parsing skipped'
+          fi
