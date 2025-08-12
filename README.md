@@ -113,7 +113,7 @@ pnpm dev:mock
 You can edit fixture JSON files to test different game states, including:
 
 - Upcoming games (status: “SCHEDULED”)
-- Live games with partial scores (status: “IN_PLAY”)
+- Live games with partial scores (status: "IN_PROGRESS")
 - Completed games (status: “FINAL”)
 
 Changes are picked up without restarting the dev server.
