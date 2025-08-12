@@ -1,7 +1,13 @@
 # nfl-tekstitv
 
 Monorepo for a Next.js app that renders NFL scores in a Teletext-style grid.
-You can edit fixture JSON files to test different game states, including:
+You can edit fixture JSON fi## Roadmap
+
+• ✅ Week-by-week navigation with keyboard shortcuts
+• Integrate live API data source
+• Team- and season-level stats views
+• Game history view (scoring timeline)
+• Minimal AWS backend for ingest + DynamoDB history test different game states, including:
 
 - Upcoming games (status: "SCHEDULED")
 - Live games with partial scores (status: "IN_PROGRESS")
