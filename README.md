@@ -3,6 +3,7 @@
 Monorepo for a Next.js app that renders NFL scores in a Teletext-style grid.
 You can edit fixture JSON fi## Roadmap
 
+## Roadmap
 • ✅ Week-by-week navigation with keyboard shortcuts
 • Integrate live API data source
 • Team- and season-level stats views
