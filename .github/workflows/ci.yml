@@ -73,7 +73,47 @@ jobs:
         run: |
           echo '## Coverage Summary' >> $GITHUB_STEP_SUMMARY
           if [ -f apps/web/coverage/lcov.info ]; then
-            npx --yes coverage-summary-cli apps/web/coverage/lcov.info >> $GITHUB_STEP_SUMMARY
+            echo '' >> $GITHUB_STEP_SUMMARY
+            # Parse lcov.info to extract coverage summary
+            total_lines=$(grep -c "^LF:" apps/web/coverage/lcov.info | head -1)
+            total_hit=$(grep -c "^LH:" apps/web/coverage/lcov.info | head -1)
+            total_functions=$(grep -c "^FNF:" apps/web/coverage/lcov.info | head -1)
+            total_functions_hit=$(grep -c "^FNH:" apps/web/coverage/lcov.info | head -1)
+            total_branches=$(grep -c "^BRF:" apps/web/coverage/lcov.info | head -1)
+            total_branches_hit=$(grep -c "^BRH:" apps/web/coverage/lcov.info | head -1)
+            
+            # Extract actual values
+            lf_sum=$(grep "^LF:" apps/web/coverage/lcov.info | cut -d: -f2 | awk '{sum += $1} END {print sum}')
+            lh_sum=$(grep "^LH:" apps/web/coverage/lcov.info | cut -d: -f2 | awk '{sum += $1} END {print sum}')
+            fnf_sum=$(grep "^FNF:" apps/web/coverage/lcov.info | cut -d: -f2 | awk '{sum += $1} END {print sum}')
+            fnh_sum=$(grep "^FNH:" apps/web/coverage/lcov.info | cut -d: -f2 | awk '{sum += $1} END {print sum}')
+            brf_sum=$(grep "^BRF:" apps/web/coverage/lcov.info | cut -d: -f2 | awk '{sum += $1} END {print sum}')
+            brh_sum=$(grep "^BRH:" apps/web/coverage/lcov.info | cut -d: -f2 | awk '{sum += $1} END {print sum}')
+            
+            # Calculate percentages
+            if [ "$lf_sum" -gt 0 ]; then
+              line_coverage=$(awk "BEGIN {printf \"%.1f\", ($lh_sum/$lf_sum)*100}")
+            else
+              line_coverage="0.0"
+            fi
+            
+            if [ "$fnf_sum" -gt 0 ]; then
+              function_coverage=$(awk "BEGIN {printf \"%.1f\", ($fnh_sum/$fnf_sum)*100}")
+            else
+              function_coverage="0.0"
+            fi
+            
+            if [ "$brf_sum" -gt 0 ]; then
+              branch_coverage=$(awk "BEGIN {printf \"%.1f\", ($brh_sum/$brf_sum)*100}")
+            else
+              branch_coverage="0.0"
+            fi
+            
+            echo "| Metric | Coverage | Total | Covered |" >> $GITHUB_STEP_SUMMARY
+            echo "|--------|----------|-------|---------|" >> $GITHUB_STEP_SUMMARY
+            echo "| Lines | ${line_coverage}% | ${lf_sum} | ${lh_sum} |" >> $GITHUB_STEP_SUMMARY
+            echo "| Functions | ${function_coverage}% | ${fnf_sum} | ${fnh_sum} |" >> $GITHUB_STEP_SUMMARY
+            echo "| Branches | ${branch_coverage}% | ${brf_sum} | ${brh_sum} |" >> $GITHUB_STEP_SUMMARY
           else
             echo 'No coverage file found' >> $GITHUB_STEP_SUMMARY
           fi
