@@ -1,23 +1,9 @@
 # nfl-tekstitv
 
 Monorepo for a Next.js app that renders NFL scores in a Teletext-style grid.
-You can edit fixture JSON fi## Roadmap
 
-## Roadmap
-• ✅ Week-by-week navigation with keyboard shortcuts
-• Integrate live API data source
-• Team- and season-level stats views
-• Game history view (scoring timeline)
-• Minimal AWS backend for ingest + DynamoDB history test different game states, including:
+## What's inside
 
-- Upcoming games (status: "SCHEDULED")
-- Live games with partial scores (status: "IN_PROGRESS")
-- Completed games (status: "FINAL")hat’s inside
-• Minimal AWS backend for ingest + DynamoDB history
-• Test different game states, including:
-  - Upcoming games (status: "SCHEDULED")
-  - Live games with partial scores (status: "IN_PROGRESS")
-  - Completed games (status: "FINAL")
 - apps/web: Next.js 14 (App Router, TS), TailwindCSS, ESLint/Prettier
 - packages/core: Domain types and adapters (mock fixture reader)
 - Shared TS base config and path aliases
@@ -94,7 +80,6 @@ Workflow runs on push/PR:
 - Next config is ESM (next.config.mjs) and transpiles the core workspace package.
 - Path alias `@core/*` maps to `packages/core/src/*`.
 
-
 ## Data sources
 
 The app supports multiple data sources via the `DATA_SOURCE` env variable:
@@ -111,9 +96,9 @@ pnpm dev:mock
 
 You can edit fixture JSON files to test different game states, including:
 
-- Upcoming games (status: “SCHEDULED”)
+- Upcoming games (status: "SCHEDULED")
 - Live games with partial scores (status: "IN_PROGRESS")
-- Completed games (status: “FINAL”)
+- Completed games (status: "FINAL")
 
 Changes are picked up without restarting the dev server.
 
@@ -131,6 +116,7 @@ E2E suite runs on Chromium in CI for speed and determinism.
 
 ## Roadmap
 
+- ✅ Week-by-week navigation with keyboard shortcuts
 - Integrate live API data source
 - Team- and season-level stats views
 - Game history view (scoring timeline)
