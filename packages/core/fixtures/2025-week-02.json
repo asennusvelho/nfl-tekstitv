@@ -1,0 +1,32 @@
+[
+  {
+    "id": "2025-02-KC-LV",
+    "season": 2025,
+    "week": 2,
+    "homeTeam": "LV",
+    "awayTeam": "KC",
+    "homeScore": 14,
+    "awayScore": 28,
+    "status": "FINAL"
+  },
+  {
+    "id": "2025-02-DAL-PHI",
+    "season": 2025,
+    "week": 2,
+    "homeTeam": "PHI",
+    "awayTeam": "DAL",
+    "homeScore": 21,
+    "awayScore": 17,
+    "status": "FINAL"
+  },
+  {
+    "id": "2025-02-SF-SEA",
+    "season": 2025,
+    "week": 2,
+    "homeTeam": "SEA",
+    "awayTeam": "SF",
+    "homeScore": 10,
+    "awayScore": 24,
+    "status": "FINAL"
+  }
+]

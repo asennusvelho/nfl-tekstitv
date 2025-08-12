@@ -1,9 +1,15 @@
 import type { Game } from '@nfl-tekstitv/core/types';
 
-export default function TeletextGrid({ games }: { games: Game[] }) {
+interface TeletextGridProps {
+  games: Game[];
+  season: number;
+  week: number;
+}
+
+export default function TeletextGrid({ games, season, week }: TeletextGridProps) {
   return (
     <div className="font-mono text-sm">
-      {/* Teletext Header */}
+      {/* Games Header */}
       <div className="text-center mb-6">
         <div className="bg-green-400 text-black px-4 py-1">
           ═══════════════════════════════════════

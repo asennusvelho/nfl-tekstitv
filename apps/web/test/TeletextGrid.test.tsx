@@ -17,7 +17,7 @@ const sample: Game[] = [
 
 describe('TeletextGrid', () => {
   it('renders game lines', () => {
-    render(<TeletextGrid games={sample} />);
+    render(<TeletextGrid games={sample} season={2025} week={1} />);
     expect(screen.getByText(/NYJ 7 @ NE 10/)).toBeInTheDocument();
   });
 });
