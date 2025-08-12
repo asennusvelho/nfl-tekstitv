@@ -94,7 +94,6 @@ Workflow runs on push/PR:
 - Next config is ESM (next.config.mjs) and transpiles the core workspace package.
 - Path alias `@core/*` maps to `packages/core/src/*`.
 
-Tässä tiivis jatko README:hen, joka sopii olemassa olevan loppuun:
 
 ## Data sources
 
