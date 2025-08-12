@@ -13,7 +13,11 @@ You can edit fixture JSON fi## Roadmap
 - Upcoming games (status: "SCHEDULED")
 - Live games with partial scores (status: "IN_PROGRESS")
 - Completed games (status: "FINAL")hat’s inside
-
+• Minimal AWS backend for ingest + DynamoDB history
+• Test different game states, including:
+  - Upcoming games (status: "SCHEDULED")
+  - Live games with partial scores (status: "IN_PROGRESS")
+  - Completed games (status: "FINAL")
 - apps/web: Next.js 14 (App Router, TS), TailwindCSS, ESLint/Prettier
 - packages/core: Domain types and adapters (mock fixture reader)
 - Shared TS base config and path aliases
