@@ -1,4 +1,5 @@
 import TeletextGrid from '../../../../components/TeletextGrid';
+import WeekNavigation from '../../../../components/WeekNavigation';
 import { getScoreProvider } from '../../../../lib/data';
 
 export default async function WeekPage({ params }: { params: { season: string; week: string } }) {
@@ -9,10 +10,8 @@ export default async function WeekPage({ params }: { params: { season: string; w
 
   return (
     <div>
-      <h1 className="mb-4">
-        Season {season} — Week {week}
-      </h1>
-      <TeletextGrid games={games} />
+      <WeekNavigation season={season} week={week} />
+      <TeletextGrid games={games} season={season} week={week} />
     </div>
   );
 }

@@ -1,0 +1,22 @@
+[
+  {
+    "id": "2025-03-BUF-MIA",
+    "season": 2025,
+    "week": 3,
+    "homeTeam": "MIA",
+    "awayTeam": "BUF",
+    "homeScore": 0,
+    "awayScore": 0,
+    "status": "SCHEDULED"
+  },
+  {
+    "id": "2025-03-TB-NO",
+    "season": 2025,
+    "week": 3,
+    "homeTeam": "NO",
+    "awayTeam": "TB",
+    "homeScore": 7,
+    "awayScore": 14,
+    "status": "IN_PROGRESS"
+  }
+]

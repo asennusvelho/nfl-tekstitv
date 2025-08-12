@@ -1,8 +1,11 @@
 # nfl-tekstitv
 
 Monorepo for a Next.js app that renders NFL scores in a Teletext-style grid.
+You can edit fixture JSON files to test different game states, including:
 
-## What’s inside
+- Upcoming games (status: "SCHEDULED")
+- Live games with partial scores (status: "IN_PROGRESS")
+- Completed games (status: "FINAL")hat’s inside
 
 - apps/web: Next.js 14 (App Router, TS), TailwindCSS, ESLint/Prettier
 - packages/core: Domain types and adapters (mock fixture reader)
@@ -35,12 +38,17 @@ Open http://localhost:3000/2025/week/1
 
 - pnpm dev: start dev server
 - pnpm dev:mock: start dev with mock data
-- pnpm lint: lint web app
+- pnpm lint: lint web app (fails on warnings)
+- pnpm lint:fix: automatically fix linting errors
+- pnpm format: format code with Prettier
+- pnpm format:check: check code formatting
+- pnpm fix: run format + lint:fix (auto-fix all issues)
+- pnpm check: run all checks (format, lint, type-check, tests)
 - pnpm type-check: TS type checking across packages
 - pnpm build: build the web app
 - pnpm start: start prod server
 - pnpm test:unit: run unit tests across packages
-- pnpm test:component: run component tests (web)
+- pnpm test:unit:cov: run unit tests with coverage
 - pnpm playwright:install: install Playwright browsers
 - pnpm test:e2e: run E2E tests
 - pnpm test:e2e:mock: run E2E (defaults to mock data)
@@ -74,3 +82,50 @@ Workflow runs on push/PR:
 - Tailwind and PostCSS configs use CJS to avoid ESM module issues in type:module projects.
 - Next config is ESM (next.config.mjs) and transpiles the core workspace package.
 - Path alias `@core/*` maps to `packages/core/src/*`.
+
+Tässä tiivis jatko README:hen, joka sopii olemassa olevan loppuun:
+
+## Data sources
+
+The app supports multiple data sources via the `DATA_SOURCE` env variable:
+
+- `mock` – local fixtures from `packages/core/fixtures` (default for dev and CI)
+- `api` – live scores from a backend adapter (to be implemented)
+
+## Local mock development
+
+```bash
+pnpm dev:mock
+# → serves mock data from packages/core/fixtures
+```
+
+You can edit fixture JSON files to test different game states, including:
+
+- Upcoming games (status: “SCHEDULED”)
+- Live games with partial scores (status: “IN_PLAY”)
+- Completed games (status: “FINAL”)
+
+Changes are picked up without restarting the dev server.
+
+## Browser support
+
+Tested on latest Chrome, Firefox, and Safari.
+E2E suite runs on Chromium in CI for speed and determinism.
+
+## Accessibility & UX
+
+- High contrast teletext theme
+- Monospace font with fixed cell grid
+- Touch swipe and keyboard navigation between weeks
+- Responsive layout optimized for mobile
+
+## Roadmap
+
+- Integrate live API data source
+- Team- and season-level stats views
+- Game history view (scoring timeline)
+- Minimal AWS backend for ingest + DynamoDB history
+
+## License
+
+MIT
