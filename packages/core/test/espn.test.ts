@@ -25,9 +25,9 @@ const mockEspnResponse = {
                 displayName: 'Philadelphia Eagles',
                 shortDisplayName: 'Eagles',
                 location: 'Philadelphia',
-                name: 'Eagles'
+                name: 'Eagles',
               },
-              score: '14'
+              score: '14',
             },
             {
               id: '6',
@@ -40,10 +40,10 @@ const mockEspnResponse = {
                 displayName: 'Dallas Cowboys',
                 shortDisplayName: 'Cowboys',
                 location: 'Dallas',
-                name: 'Cowboys'
+                name: 'Cowboys',
               },
-              score: '7'
-            }
+              score: '7',
+            },
           ],
           status: {
             clock: 0.0,
@@ -56,11 +56,11 @@ const mockEspnResponse = {
               completed: false,
               description: 'Scheduled',
               detail: 'Thu, September 4th at 8:20 PM EDT',
-              shortDetail: '9/4 - 8:20 PM EDT'
-            }
-          }
-        }
-      ]
+              shortDetail: '9/4 - 8:20 PM EDT',
+            },
+          },
+        },
+      ],
     },
     {
       id: '401772714',
@@ -83,9 +83,9 @@ const mockEspnResponse = {
                 displayName: 'Los Angeles Chargers',
                 shortDisplayName: 'Chargers',
                 location: 'Los Angeles',
-                name: 'Chargers'
+                name: 'Chargers',
               },
-              score: '21'
+              score: '21',
             },
             {
               id: '12',
@@ -98,10 +98,10 @@ const mockEspnResponse = {
                 displayName: 'Kansas City Chiefs',
                 shortDisplayName: 'Chiefs',
                 location: 'Kansas City',
-                name: 'Chiefs'
+                name: 'Chiefs',
               },
-              score: '28'
-            }
+              score: '28',
+            },
           ],
           status: {
             clock: 0.0,
@@ -114,11 +114,11 @@ const mockEspnResponse = {
               completed: true,
               description: 'Final',
               detail: 'Final',
-              shortDetail: 'Final'
-            }
-          }
-        }
-      ]
+              shortDetail: 'Final',
+            },
+          },
+        },
+      ],
     },
     {
       id: '401772830',
@@ -141,9 +141,9 @@ const mockEspnResponse = {
                 displayName: 'Atlanta Falcons',
                 shortDisplayName: 'Falcons',
                 location: 'Atlanta',
-                name: 'Falcons'
+                name: 'Falcons',
               },
-              score: '17'
+              score: '17',
             },
             {
               id: '27',
@@ -156,10 +156,10 @@ const mockEspnResponse = {
                 displayName: 'Tampa Bay Buccaneers',
                 shortDisplayName: 'Buccaneers',
                 location: 'Tampa Bay',
-                name: 'Buccaneers'
+                name: 'Buccaneers',
               },
-              score: '20'
-            }
+              score: '20',
+            },
           ],
           status: {
             clock: 847.0,
@@ -172,13 +172,13 @@ const mockEspnResponse = {
               completed: false,
               description: 'In Progress',
               detail: '2nd Quarter',
-              shortDetail: '2nd Qtr'
-            }
-          }
-        }
-      ]
-    }
-  ]
+              shortDetail: '2nd Qtr',
+            },
+          },
+        },
+      ],
+    },
+  ],
 };
 
 describe('EspnAdapter', () => {
@@ -199,13 +199,13 @@ describe('EspnAdapter', () => {
       // Mock fetch
       global.fetch = vi.fn().mockResolvedValue({
         ok: true,
-        json: () => Promise.resolve(mockEspnResponse)
+        json: () => Promise.resolve(mockEspnResponse),
       });
 
       const games = await adapter.getGames(2025, 1);
 
       expect(global.fetch).toHaveBeenCalledWith(
-        'http://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard?week=1&seasontype=2&year=2025'
+        'http://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard?week=1&seasontype=2&year=2025',
       );
       expect(games).toHaveLength(3);
     });
@@ -213,7 +213,7 @@ describe('EspnAdapter', () => {
     it('should handle scheduled games correctly', async () => {
       global.fetch = vi.fn().mockResolvedValue({
         ok: true,
-        json: () => Promise.resolve(mockEspnResponse)
+        json: () => Promise.resolve(mockEspnResponse),
       });
 
       const games = await adapter.getGames(2025, 1);
@@ -227,14 +227,14 @@ describe('EspnAdapter', () => {
         awayTeam: 'DAL',
         homeScore: 14,
         awayScore: 7,
-        status: 'SCHEDULED'
+        status: 'SCHEDULED',
       });
     });
 
     it('should handle final games correctly', async () => {
       global.fetch = vi.fn().mockResolvedValue({
         ok: true,
-        json: () => Promise.resolve(mockEspnResponse)
+        json: () => Promise.resolve(mockEspnResponse),
       });
 
       const games = await adapter.getGames(2025, 1);
@@ -248,14 +248,14 @@ describe('EspnAdapter', () => {
         awayTeam: 'KC',
         homeScore: 21,
         awayScore: 28,
-        status: 'FINAL'
+        status: 'FINAL',
       });
     });
 
     it('should handle in-progress games correctly', async () => {
       global.fetch = vi.fn().mockResolvedValue({
         ok: true,
-        json: () => Promise.resolve(mockEspnResponse)
+        json: () => Promise.resolve(mockEspnResponse),
       });
 
       const games = await adapter.getGames(2025, 1);
@@ -269,7 +269,7 @@ describe('EspnAdapter', () => {
         awayTeam: 'TB',
         homeScore: 17,
         awayScore: 20,
-        status: 'IN_PROGRESS'
+        status: 'IN_PROGRESS',
       });
     });
 
@@ -284,22 +284,22 @@ describe('EspnAdapter', () => {
                 competitors: [
                   {
                     ...mockEspnResponse.events[0].competitions[0].competitors[0],
-                    score: ''
+                    score: '',
                   },
                   {
                     ...mockEspnResponse.events[0].competitions[0].competitors[1],
-                    score: ''
-                  }
-                ]
-              }
-            ]
-          }
-        ]
+                    score: '',
+                  },
+                ],
+              },
+            ],
+          },
+        ],
       };
 
       global.fetch = vi.fn().mockResolvedValue({
         ok: true,
-        json: () => Promise.resolve(responseWithMissingScores)
+        json: () => Promise.resolve(responseWithMissingScores),
       });
 
       const games = await adapter.getGames(2025, 1);
@@ -313,20 +313,18 @@ describe('EspnAdapter', () => {
       global.fetch = vi.fn().mockResolvedValue({
         ok: false,
         status: 500,
-        statusText: 'Internal Server Error'
+        statusText: 'Internal Server Error',
       });
 
       await expect(adapter.getGames(2025, 1)).rejects.toThrow(
-        'ESPN API error: 500 Internal Server Error'
+        'ESPN API error: 500 Internal Server Error',
       );
     });
 
     it('should throw error on network failure', async () => {
       global.fetch = vi.fn().mockRejectedValue(new Error('Network error'));
 
-      await expect(adapter.getGames(2025, 1)).rejects.toThrow(
-        'Unable to fetch live game data'
-      );
+      await expect(adapter.getGames(2025, 1)).rejects.toThrow('Unable to fetch live game data');
     });
 
     it('should handle missing competition data', async () => {
@@ -334,18 +332,18 @@ describe('EspnAdapter', () => {
         events: [
           {
             ...mockEspnResponse.events[0],
-            competitions: []
-          }
-        ]
+            competitions: [],
+          },
+        ],
       };
 
       global.fetch = vi.fn().mockResolvedValue({
         ok: true,
-        json: () => Promise.resolve(responseWithMissingCompetition)
+        json: () => Promise.resolve(responseWithMissingCompetition),
       });
 
       await expect(adapter.getGames(2025, 1)).rejects.toThrow(
-        'No competition data found for event 401772510'
+        'No competition data found for event 401772510',
       );
     });
 
@@ -359,23 +357,23 @@ describe('EspnAdapter', () => {
                 ...mockEspnResponse.events[0].competitions[0],
                 competitors: [
                   {
-                    ...mockEspnResponse.events[0].competitions[0].competitors[0]
+                    ...mockEspnResponse.events[0].competitions[0].competitors[0],
                     // Missing away team
-                  }
-                ]
-              }
-            ]
-          }
-        ]
+                  },
+                ],
+              },
+            ],
+          },
+        ],
       };
 
       global.fetch = vi.fn().mockResolvedValue({
         ok: true,
-        json: () => Promise.resolve(responseWithMissingTeam)
+        json: () => Promise.resolve(responseWithMissingTeam),
       });
 
       await expect(adapter.getGames(2025, 1)).rejects.toThrow(
-        'Missing home or away team data for event 401772510'
+        'Missing home or away team data for event 401772510',
       );
     });
   });
