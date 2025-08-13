@@ -2,12 +2,19 @@ import { describe, it, expect, afterEach } from 'vitest';
 import { getScoreProvider } from '../lib/data';
 
 describe('getScoreProvider', () => {
-  const ORIGINAL = process.env.DATA_SOURCE;
+  const ORIGINAL_DATA_SOURCE = process.env.DATA_SOURCE;
+  const ORIGINAL_NEXT_PUBLIC_DATA_SOURCE = process.env.NEXT_PUBLIC_DATA_SOURCE;
+
   afterEach(() => {
-    if (ORIGINAL === undefined) {
+    if (ORIGINAL_DATA_SOURCE === undefined) {
       delete process.env.DATA_SOURCE;
     } else {
-      process.env.DATA_SOURCE = ORIGINAL;
+      process.env.DATA_SOURCE = ORIGINAL_DATA_SOURCE;
+    }
+    if (ORIGINAL_NEXT_PUBLIC_DATA_SOURCE === undefined) {
+      delete process.env.NEXT_PUBLIC_DATA_SOURCE;
+    } else {
+      process.env.NEXT_PUBLIC_DATA_SOURCE = ORIGINAL_NEXT_PUBLIC_DATA_SOURCE;
     }
   });
 
@@ -19,8 +26,23 @@ describe('getScoreProvider', () => {
     expect(typeof provider.getGames).toBe('function');
   });
 
-  it('throws when DATA_SOURCE not set', () => {
+  it('returns ESPN provider when DATA_SOURCE=espn', () => {
+    process.env.DATA_SOURCE = 'espn';
+    const provider = getScoreProvider();
+    expect(provider).toBeDefined();
+    expect(typeof provider.getGames).toBe('function');
+  });
+
+  it('returns mock provider by default when no DATA_SOURCE is set', () => {
     delete process.env.DATA_SOURCE;
-    expect(() => getScoreProvider()).toThrow(/DATA_SOURCE=mock/);
+    delete process.env.NEXT_PUBLIC_DATA_SOURCE;
+    const provider = getScoreProvider();
+    expect(provider).toBeDefined();
+    expect(typeof provider.getGames).toBe('function');
+  });
+
+  it('throws when unknown DATA_SOURCE is set', () => {
+    process.env.DATA_SOURCE = 'unknown';
+    expect(() => getScoreProvider()).toThrow(/Unknown data source: unknown/);
   });
 });

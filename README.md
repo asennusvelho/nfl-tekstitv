@@ -87,6 +87,38 @@ The app supports multiple data sources via the `DATA_SOURCE` env variable:
 - `mock` – local fixtures from `packages/core/fixtures` (default for dev and CI)
 - `api` – live scores from a backend adapter (to be implemented)
 
+## Data Sources
+
+The application supports multiple data sources:
+
+### Mock Data (Default)
+Uses fixtures from `packages/core/fixtures` for development and testing.
+
+```bash
+pnpm dev:mock
+# or set environment variable
+NEXT_PUBLIC_DATA_SOURCE=mock pnpm dev
+```
+
+### ESPN API (Live Data)
+Integrates with ESPN's public NFL scoreboard API for real-time game data.
+
+```bash
+# Set environment variable for ESPN API
+NEXT_PUBLIC_DATA_SOURCE=espn pnpm dev
+```
+
+Or create a `.env.local` file:
+```
+NEXT_PUBLIC_DATA_SOURCE=espn
+```
+
+**API Details:**
+- Endpoint: `http://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard`
+- Data includes: game schedules, live scores, game status, team information
+- Supports all NFL weeks (1-18) and seasons
+- No authentication required
+
 ## Local mock development
 
 ```bash
@@ -117,7 +149,11 @@ E2E suite runs on Chromium in CI for speed and determinism.
 ## Roadmap
 
 - ✅ Week-by-week navigation with keyboard shortcuts
-- Integrate live API data source
+- ✅ Live API data source (ESPN integration)
+- Enhanced game information display
+- Auto-refresh for live games
+- Season overview page
+- Improved error handling and loading states
 - Team- and season-level stats views
 - Game history view (scoring timeline)
 - Minimal AWS backend for ingest + DynamoDB history
