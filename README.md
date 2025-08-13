@@ -93,7 +93,7 @@ Workflow runs on push/PR:
 
 ## Data sources
 
-The app supports multiple data sources via the `NEXT_PUBLIC_DATA_SOURCE` environment variable:
+The app supports multiple data sources via the `NEXT_PUBLIC_DATA_SOURCE` Environment Variable:
 
 - `espn` – live scores from ESPN's public API
 - `mock` – local fixtures from `packages/core/fixtures` (default for dev and CI)
