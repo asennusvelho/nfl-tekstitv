@@ -17,6 +17,9 @@ export default defineConfig({
     reuseExistingServer: true, // Always reuse if server is already running
     stdout: 'pipe',
     stderr: 'pipe',
-    env: { ...process.env, DATA_SOURCE: process.env.DATA_SOURCE || 'mock' },
+    env: {
+      ...process.env,
+      NEXT_PUBLIC_DATA_SOURCE: process.env.NEXT_PUBLIC_DATA_SOURCE || 'mock',
+    },
   },
 });
