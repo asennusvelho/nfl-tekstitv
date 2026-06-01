@@ -19,7 +19,7 @@
     "playwright:install": "playwright install --with-deps"
   },
   "dependencies": {
-    "next": "14.2.30",
+    "next": "15.5.18",
     "react": "18.3.1",
     "react-dom": "18.3.1",
     "@nfl-tekstitv/core": "workspace:*",
@@ -42,10 +42,10 @@
     "eslint-config-prettier": "9.1.0",
     "eslint-plugin-prettier": "5.2.1",
     "jsdom": "24.1.0",
-    "postcss": "8.4.40",
+    "postcss": "8.5.10",
     "prettier": "3.3.3",
     "tailwindcss": "3.4.7",
     "typescript": "5.5.4",
-    "vitest": "3.2.4"
+    "vitest": "4.1.0"
   }
 }
